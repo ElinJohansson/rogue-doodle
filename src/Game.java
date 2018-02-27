@@ -198,7 +198,7 @@ public class Game {
     }
 
     //Metod som kontrollerar om spelaren står på exit
-    public boolean isOnExit() {
+    public boolean playerIsOnExit() {
         if (levelGenerator.map.environment[player.getPosition().getY()][player.getPosition().getX()] == 9) { //Står på exit point
             return true;
         }

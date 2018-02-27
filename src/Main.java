@@ -3,19 +3,22 @@ public class Main {
 
         Game game = new Game();
 
-        //To do
-
+        game.newGame();
+        game.updateMap();
         while (true) {
-            game.newGame();
-            game.updateMap();
             while (!game.gameOver()) {
                 game.movePlayer();
-                if(game.isOnExit()){
-                    break;
+                if(!game.playerIsOnExit()){
+                    game.moveMonsters();
+                    game.updateMap();
+                } else if(game.playerIsOnExit()){
+                    game.newGame();
+                    game.updateMap();
                 }
-                game.moveMonsters();
-                game.updateMap();
             }
         }
+
+        //När spelaren går på exit randomiseras en ny nivå fram
+        //När monster och spelare är på samma position är spelet slut
     }
 }

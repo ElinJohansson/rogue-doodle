@@ -121,12 +121,6 @@ public class LevelGenerator {
         map.environment[emptyPosition.getY()][emptyPosition.getX()] = map.exit;
     }
 
-
-    /*I kartan ska det finnas en punkt som leder till att en ny karta slumpas fram, kan motsvaras av nr 9. Så om
-    player står på nr 9 i kartan anropas digtunnels igen.
-    Exit ska finnas på en utgrävd ruta
-
-     */
 }
 
 
