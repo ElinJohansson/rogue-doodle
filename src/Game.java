@@ -28,7 +28,7 @@ public class Game {
         //Lägg till spelare
         player = new Player(levelGenerator.map.startDigHere);
         //Lägg till monster
-        monsters = new Monster[1];
+        monsters = new Monster[monstersAtGameStart];
         for (int i = 0; i < monsters.length; i++) {
             monsters[i] = new Monster(levelGenerator.getRandomAlreadyVisitedPosition());
         }
@@ -210,10 +210,23 @@ public class Game {
         for (int i = 0; i < monsters.length; i++) {
             if (monsters[i].getPosition().getY() == player.getPosition().getY() &&
                     monsters[i].getPosition().getX() == player.getPosition().getX()) {
+                printGameOver();
                 return true;
             }
         }
         return false;
+    }
+
+    //Om game over ska game over skrivas ut på skärmen
+    public void printGameOver() {
+        String gameOver = "Game Over";
+        int xPos = 75;
+        int yPos = 5;
+        for (int i = 0; i < gameOver.length(); i++) {
+            terminal.moveCursor(xPos, yPos);
+            terminal.putCharacter(gameOver.charAt(i));
+            xPos = xPos + 1;
+        }
     }
 
 }

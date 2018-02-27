@@ -5,6 +5,7 @@ public class Main {
 
         game.newGame();
         game.updateMap();
+
         while (true) {
             while (!game.gameOver()) {
                 game.movePlayer();
@@ -17,8 +18,5 @@ public class Main {
                 }
             }
         }
-
-        //När spelaren går på exit randomiseras en ny nivå fram
-        //När monster och spelare är på samma position är spelet slut
     }
 }
