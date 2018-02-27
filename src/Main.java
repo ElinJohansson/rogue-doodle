@@ -3,6 +3,8 @@ public class Main {
 
         Game game = new Game();
 
+        //To do
+
         while (true) {
             game.newGame();
             game.updateMap();
