@@ -24,8 +24,9 @@ public class LevelGenerator {
     public Terminal terminal;
 
     //Constructor
-    public LevelGenerator(Terminal terminal) {
+    public LevelGenerator(Terminal terminal) throws InterruptedException {
         this.terminal = terminal;
+
         map = new Map();
         stepLength = (int) (map.getHeight() * map.getEnvironmentWidth() * filledPercentage);
         digTunnels(map.startDigHere);
@@ -33,12 +34,11 @@ public class LevelGenerator {
     }
 
     //Gräver ut tunnlar och börjar på en viss position
-    public void digTunnels(Position position) {
+    public void digTunnels(Position position) throws InterruptedException {
 
         //Där grävaren står just nu
         int currentY = position.getY();
         int currentX = position.getX();
-
 
         int[] lastDirection = {5, 5};
 
@@ -67,6 +67,7 @@ public class LevelGenerator {
                     stepLength--;
                 }
             }
+            updateMap();
         }
     }
 
@@ -119,6 +120,48 @@ public class LevelGenerator {
     public void setExit() {
         Position emptyPosition = getRandomAlreadyVisitedPosition();
         map.environment[emptyPosition.getY()][emptyPosition.getX()] = map.exit;
+    }
+
+    //För att se hur dungeon grävs ut
+    public void updateMap() throws InterruptedException {
+        printEnvironment();
+        printStatisticsArea();
+        Thread.sleep(2);
+    }
+
+    public void printEnvironment() {
+        terminal.applyForegroundColor(189, 60, 40);
+        for (int i = 0; i < map.environment.length; i++) {
+            for (int j = 0; j < map.environment[i].length; j++) {
+                terminal.moveCursor(j, i);
+                if (map.environment[i][j] == 0) { //rock
+                    terminal.applyForegroundColor(189, 60, 40);
+                    terminal.putCharacter('\u2588');
+                } else if (map.environment[i][j] == 9) { //exit sign
+                    terminal.applyForegroundColor(23, 104, 122);
+                    terminal.putCharacter('E');
+                } else { //utgrävd
+                    terminal.applyForegroundColor(189, 60, 40);
+                    terminal.putCharacter('\u00B7');
+                }
+            }
+        }
+    }
+
+    public void printStatisticsArea() {
+        //Löper igenom statistics-arrayen från y = 0, till y = map height; och från x = map width, till x = statistics map width
+        for (int i = 0; i < map.getHeight(); i++) {
+            for (int j = map.getEnvironmentWidth(); j < map.getEnvironmentWidth()+map.getStatisticsWidth(); j++) {
+                terminal.moveCursor(j, i);
+                if (map.statistics[i][j] == 1) { //utanför environment-map
+                    terminal.applyForegroundColor(255, 255, 255);
+                    terminal.putCharacter(' ');
+                } else if (map.statistics[i][j] == 2) { //ramen
+                    terminal.applyForegroundColor(189, 60, 40);
+                    terminal.putCharacter('\u2588');
+                }
+            }
+        }
     }
 
 }

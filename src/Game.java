@@ -23,7 +23,7 @@ public class Game {
         terminalSettings();
     }
 
-    public void newGame() {
+    public void newGame() throws InterruptedException {
         levelGenerator = new LevelGenerator(terminal);
         //Lägg till spelare
         player = new Player(levelGenerator.map.startDigHere);
