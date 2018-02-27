@@ -13,7 +13,7 @@ public class Game {
 
     //Monstervariabler
     public Monster[] monsters;
-    private int monstersAtGameStart = 4;
+    private int monstersAtGameStart = 1;
 
     public Terminal terminal;
 
@@ -42,6 +42,7 @@ public class Game {
 
     public void updateMap() {
         printEnvironment();
+        printStatisticsArea();
         printPlayer();
         printMonster();
     }
@@ -51,13 +52,13 @@ public class Game {
         for (int i = 0; i < levelGenerator.map.environment.length; i++) {
             for (int j = 0; j < levelGenerator.map.environment[i].length; j++) {
                 terminal.moveCursor(j, i);
-                if (levelGenerator.map.environment[i][j] == 0) {
+                if (levelGenerator.map.environment[i][j] == 0) { //rock
                     terminal.applyForegroundColor(189, 60, 40);
                     terminal.putCharacter('\u2588');
-                } else if (levelGenerator.map.environment[i][j] == 9) {
+                } else if (levelGenerator.map.environment[i][j] == 9) { //exit sign
                     terminal.applyForegroundColor(23, 104, 122);
                     terminal.putCharacter('E');
-                } else {
+                } else { //utgrävd
                     terminal.applyForegroundColor(189, 60, 40);
                     terminal.putCharacter('\u00B7');
                 }
@@ -76,6 +77,22 @@ public class Game {
             terminal.moveCursor(monsters[i].getPosition().getX(), monsters[i].getPosition().getY());
             terminal.applyForegroundColor(51, 27, 171);
             terminal.putCharacter('\u046A');
+        }
+    }
+
+    public void printStatisticsArea() {
+        //Löper igenom statistics-arrayen från y = 0, till y = map height; och från x = map width, till x = statistics map width
+        for (int i = 0; i < levelGenerator.map.getHeight(); i++) {
+            for (int j = levelGenerator.map.getEnvironmentWidth(); j < levelGenerator.map.getEnvironmentWidth()+levelGenerator.map.getStatisticsWidth(); j++) {
+                terminal.moveCursor(j, i);
+                if (levelGenerator.map.statistics[i][j] == 1) { //utanför environment-map
+                    terminal.applyForegroundColor(255, 255, 255);
+                    terminal.putCharacter(' ');
+                } else if (levelGenerator.map.statistics[i][j] == 2) { //ramen
+                    terminal.applyForegroundColor(189, 60, 40);
+                    terminal.putCharacter('\u2588');
+                }
+            }
         }
     }
 
@@ -177,7 +194,7 @@ public class Game {
 
     //Metod som kontrollerar om current position krockar med yttre väggar
     public boolean hitWall(Position position) {
-        if (position.getX() <= 0 || position.getX() >= levelGenerator.map.getWidth() - 1 || position.getY() <= 0
+        if (position.getX() <= 0 || position.getX() >= levelGenerator.map.getEnvironmentWidth() - 1 || position.getY() <= 0
                 || position.getY() >= levelGenerator.map.getHeight() - 1) {
             return true;
         }

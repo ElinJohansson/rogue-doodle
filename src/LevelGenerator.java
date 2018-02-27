@@ -27,7 +27,7 @@ public class LevelGenerator {
     public LevelGenerator(Terminal terminal) {
         this.terminal = terminal;
         map = new Map();
-        stepLength = (int) (map.getHeight() * map.getWidth() * filledPercentage);
+        stepLength = (int) (map.getHeight() * map.getEnvironmentWidth() * filledPercentage);
         digTunnels(map.startDigHere);
         setExit();
     }
@@ -90,7 +90,7 @@ public class LevelGenerator {
 
     //Metod som kontrollerar om current position med nya radnom direction krockar med en vägg
     public boolean hitWall(int newPositionY, int newPositionX) {
-        if (newPositionX <= 0 || newPositionX >= map.getWidth() - 1 || newPositionY <= 0 || newPositionY >= map.getHeight() - 1) {
+        if (newPositionX <= 0 || newPositionX >= map.getEnvironmentWidth() - 1 || newPositionY <= 0 || newPositionY >= map.getHeight() - 1) {
             return true;
         }
         return false;
@@ -99,7 +99,7 @@ public class LevelGenerator {
     //Slumpar fram en random position på spelplanen
     public Position randomPosition() {
         Position randomPosition = new Position();
-        randomPosition.setX(random.nextInt(map.getWidth() - 2) + 1);
+        randomPosition.setX(random.nextInt(map.getEnvironmentWidth() - 2) + 1);
         randomPosition.setY(random.nextInt(map.getHeight() - 2) + 1);
         return randomPosition;
     }
