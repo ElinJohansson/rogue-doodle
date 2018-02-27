@@ -13,4 +13,8 @@ public class Monster {
         this.position.setX(x);
         this.position.setY(y);
     }
+
+    public void setPosition(Position position){
+        this.position = position;
+    }
 }

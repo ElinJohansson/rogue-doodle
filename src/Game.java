@@ -13,7 +13,7 @@ public class Game {
 
     //Monstervariabler
     public Monster[] monsters;
-    private int monstersAtGameStart = 1;
+    private int monstersAtGameStart = 4;
 
     public Terminal terminal;
 
@@ -34,6 +34,9 @@ public class Game {
         monsters = new Monster[monstersAtGameStart];
         for (int i = 0; i < monsters.length; i++) {
             monsters[i] = new Monster(levelGenerator.getRandomAlreadyVisitedPosition());
+            while(monsters[i].getPosition() == player.getPosition()){
+                monsters[i].setPosition(levelGenerator.getRandomAlreadyVisitedPosition());
+            }
         }
         levelGenerator.setLevelOfDungeon(1); //updates level count
         updateMap();

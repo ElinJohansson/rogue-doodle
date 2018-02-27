@@ -1,5 +1,4 @@
 import com.googlecode.lanterna.terminal.Terminal;
-
 import java.util.*;
 
 public class LevelGenerator {
