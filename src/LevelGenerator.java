@@ -4,7 +4,8 @@ import java.util.*;
 
 public class LevelGenerator {
 
-    Map map;
+    private static int levelOfDungeon = 0; //startnivå 1
+    public Map map;
 
     //Directions
     private final int[] left = {0, -1};
@@ -121,7 +122,6 @@ public class LevelGenerator {
         Position emptyPosition = getRandomAlreadyVisitedPosition();
         map.environment[emptyPosition.getY()][emptyPosition.getX()] = map.exit;
     }
-
     //För att se hur dungeon grävs ut
     public void updateMap() throws InterruptedException {
         printEnvironment();
@@ -162,6 +162,14 @@ public class LevelGenerator {
                 }
             }
         }
+    }
+
+    public static void setLevelOfDungeon(int levelIncrease) {
+        levelOfDungeon = levelOfDungeon+levelIncrease;
+    }
+
+    public static int getLevelOfDungeon() {
+        return levelOfDungeon;
     }
 
 }
