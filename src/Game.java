@@ -23,6 +23,7 @@ public class Game {
         terminalSettings();
     }
 
+    //Starts a new game
     public void newGame() {
         levelGenerator = new LevelGenerator(terminal);
         //Lägg till spelare
@@ -32,6 +33,8 @@ public class Game {
         for (int i = 0; i < monsters.length; i++) {
             monsters[i] = new Monster(levelGenerator.getRandomAlreadyVisitedPosition());
         }
+        levelGenerator.setLevelOfDungeon(1); //updates level count
+        updateMap();
     }
 
     private void terminalSettings() {
@@ -43,6 +46,7 @@ public class Game {
     public void updateMap() {
         printEnvironment();
         printStatisticsArea();
+        printCurrentLevel();
         printPlayer();
         printMonster();
     }
@@ -83,7 +87,7 @@ public class Game {
     public void printStatisticsArea() {
         //Löper igenom statistics-arrayen från y = 0, till y = map height; och från x = map width, till x = statistics map width
         for (int i = 0; i < levelGenerator.map.getHeight(); i++) {
-            for (int j = levelGenerator.map.getEnvironmentWidth(); j < levelGenerator.map.getEnvironmentWidth()+levelGenerator.map.getStatisticsWidth(); j++) {
+            for (int j = levelGenerator.map.getEnvironmentWidth(); j < levelGenerator.map.getEnvironmentWidth() + levelGenerator.map.getStatisticsWidth(); j++) {
                 terminal.moveCursor(j, i);
                 if (levelGenerator.map.statistics[i][j] == 1) { //utanför environment-map
                     terminal.applyForegroundColor(255, 255, 255);
@@ -93,6 +97,18 @@ public class Game {
                     terminal.putCharacter('\u2588');
                 }
             }
+        }
+    }
+
+    public void printCurrentLevel() {
+        //Skriver ut vilken nivå man är på
+        String gameOver = "You're on dungeon level\n" + levelGenerator.getLevelOfDungeon();
+        int xPos = 65;
+        int yPos = 5;
+        for (int i = 0; i < gameOver.length(); i++) {
+            terminal.moveCursor(xPos, yPos);
+            terminal.putCharacter(gameOver.charAt(i));
+            xPos = xPos + 1;
         }
     }
 
@@ -149,6 +165,12 @@ public class Game {
                     break;
                 }
         }
+    }
+
+    //Spelets tur
+    public void gameTurn() {
+        moveMonsters();
+        updateMap();
     }
 
     //Monster ska röra sig mot spelaren
@@ -227,6 +249,7 @@ public class Game {
         for (int i = 0; i < monsters.length; i++) {
             if (monsters[i].getPosition().getY() == player.getPosition().getY() &&
                     monsters[i].getPosition().getX() == player.getPosition().getX()) {
+                printStatisticsArea();
                 printGameOver();
                 return true;
             }
